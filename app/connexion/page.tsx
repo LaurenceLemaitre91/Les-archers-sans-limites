@@ -1,4 +1,3 @@
-// app/connexion/page.tsx
 "use client"; // Indique que ce composant est un composant client
 import Link from "next/link";
 import { FormEvent, useState } from "react";
@@ -15,11 +14,10 @@ const Connexion = () => {
     event.preventDefault();
     setErrorMessage(null);
 
+    //Formulaire de Connexion et Données de Saisie
     const formData = new FormData(event.currentTarget);
     const pseudo = formData.get("pseudo") as string;
     const mdp = formData.get("mdp") as string;
-
-    console.log("Tentative de connexion avec:", { pseudo, mdp: "***" });
 
     if (!pseudo || !mdp) {
       setErrorMessage("Identifiant et mot de passe requis.");
@@ -27,6 +25,7 @@ const Connexion = () => {
     }
 
     try {
+      //Requête API pour Authentification
       const response = await fetch("/api/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -36,15 +35,15 @@ const Connexion = () => {
       const result = await response.json();
       console.log("Statut de la réponse :", response.status);
       console.log("Réponse du serveur :", result);
-
+      // Gestion des Cookies après Connexion Réussie
       if (response.ok) {
         Cookies.set("adherent", JSON.stringify(result.adherent), {
           expires: 1,
         });
+        // Redirection en Fonction du Rôle de l'Utilisateur
         if (result.adherent.id_role === 2) {
           router.push("/admin");
         } else {
-          // Assurez-vous que result.user.id_licence existe
           if (result.adherent.id_licence) {
             router.push(`/adherent/${result.adherent.id_licence}`);
           } else {
@@ -55,6 +54,7 @@ const Connexion = () => {
           }
         }
       } else {
+        //Gestion des Erreurs et Affichage des Messages
         setErrorMessage(result.error || "Une erreur est survenue.");
       }
     } catch (error) {

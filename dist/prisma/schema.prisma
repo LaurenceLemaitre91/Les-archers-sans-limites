@@ -60,7 +60,6 @@ model Score {
   @@index([id_licence])
 }
 
-
 model Adhesion {
   id_adhesion   Int      @id @default(autoincrement())
   tarif         Int
@@ -70,9 +69,6 @@ model Adhesion {
 
   @@unique([id_licence])
 }
-
-
-
 
 model EvenementHasAdherent {
   id_evt     Int      @id @default(autoincrement())

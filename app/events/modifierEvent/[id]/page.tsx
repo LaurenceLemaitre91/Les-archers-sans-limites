@@ -57,7 +57,8 @@ const ModifierEvent = ({ params }: { params: { id: string } }) => {
     e.preventDefault();
     if (!event) return;
 
-    const formattedDate = new Date(event.date_evt).toISOString(); // standardise la date dans un format compatible avec la plupart des bases de données
+    const formattedDate = new Date(event.date_evt).toISOString();
+    // standardise la date dans un format compatible avec la plupart des bases de données
 
     try {
       const response = await fetch(`/api/events/${params.id}`, {
